@@ -22,7 +22,10 @@
     if answer == 'y'
       p 'Filename?'
       @filename = gets.chomp
-    File.open("saved_files/#{@filename}.txt",'w') {|f| f.write @player_guess,"\n", @guessword}
+      saved_game = [@player_guess,@guessword,@count]
+    File.open("saved_files/#{@filename}.txt",'w') do |f| 
+      f.puts(saved_game)
+    end 
     else
       return  
     end 
@@ -37,8 +40,11 @@
     @filename = gets.chomp
     file = File.open("saved_files/#{@filename}.txt","r")
     lines = file.readlines
-    @guessword = lines[0].chop
-    @player_guess = lines[1] 
+    array = []
+    lines.each do |l| 
+       array << l.chop
+    end 
+    p array.split(0,10)
     end 
   end 
 
@@ -66,6 +72,7 @@
     openfile
     p @guessword
     p @player_guess
+    p @count
     until @count == 3
     savefile()
     p "Guess Letter:"
