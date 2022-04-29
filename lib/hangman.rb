@@ -7,28 +7,44 @@
 
     attr_accessor :guessword
 
-    def initialize(player_class)
-      @player = player_class.new('Jon',self)
-      @Letter
-      @player_guess = []
-      @guessword = @@mid_size_words[rand(0..8449)].chop.split('')
-      @count = 0
-      @answer
-      @filename
-    end
+  def initialize(player_class)
+    @player = player_class.new('Jon',self)
+    @Letter
+    @player_guess = []
+    @guessword = @@mid_size_words[rand(0..8449)].chop.split('')
+    @count = 0
+    @filename
+  end
   
   def savefile()
     p "Do you want to save file?"
-    @answer = gets.chomp
-    if @answer == 'y'
+    answer = gets.chomp
+    if answer == 'y'
       p 'Filename?'
       @filename = gets.chomp
-    File.open("saved_files/#{@filename}.txt",'w') {|f| f.write @player_guess}
+    File.open("saved_files/#{@filename}.txt",'w') {|f| f.write @player_guess,"\n", @guessword}
     else
       return  
     end 
   end 
 
+  def openfile
+    p "Do you want to open a saved file?"
+    answer = gets.chomp
+    if answer == 'y'
+    p "Which file do you want to continue with?"
+    view_saved_files
+    @filename = gets.chomp
+    file = File.open("saved_files/#{@filename}.txt","r")
+    lines = file.readlines
+    @guessword = lines[0].chop
+    @player_guess = lines[1] 
+    end 
+  end 
+
+  def view_saved_files
+    Dir.glob('saved_files/*').each {|f| p f}
+  end 
 
   def generate_guess_display()
     count = 0
@@ -47,7 +63,9 @@
 
   def play()
     generate_guess_display
+    openfile
     p @guessword
+    p @player_guess
     until @count == 3
     savefile()
     p "Guess Letter:"
