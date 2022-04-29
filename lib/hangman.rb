@@ -44,6 +44,7 @@
     lines.each do |l| 
        array << l.chop
     end 
+    #seperate guessword,guess display and count
     p array.slice(0,array.length/2)
     p array.slice(array.length/2,array.length/2)
     p array[-1]
