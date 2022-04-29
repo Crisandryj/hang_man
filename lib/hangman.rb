@@ -44,7 +44,9 @@
     lines.each do |l| 
        array << l.chop
     end 
-    p array.split(0,10)
+    p array.slice(0,array.length/2)
+    p array.slice(array.length/2,array.length/2)
+    p array[-1]
     end 
   end 
 
