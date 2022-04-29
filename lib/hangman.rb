@@ -13,8 +13,22 @@
       @player_guess = []
       @guessword = @@mid_size_words[rand(0..8449)].chop.split('')
       @count = 0
+      @answer
+      @filename
     end
   
+  def savefile()
+    p "Do you want to save file?"
+    @answer = gets.chomp
+    if @answer == 'y'
+      p 'Filename?'
+      @filename = gets.chomp
+    File.open("saved_files/#{@filename}.txt",'w') {|f| f.write @player_guess}
+    else
+      return  
+    end 
+  end 
+
 
   def generate_guess_display()
     count = 0
@@ -27,17 +41,17 @@
   def gameover?(count)
     if @count == 3
       p "GAMEOVER"
+      return
     end 
   end 
 
   def play()
     generate_guess_display
-
+    p @guessword
     until @count == 3
+    savefile()
     p "Guess Letter:"
     @letter = gets.chomp.downcase
-
-    p @guessword
 
     if !@guessword.include?(@letter)
       @count +=1
