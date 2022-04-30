@@ -3,14 +3,13 @@
  class Hangman
     @@contents = File.readlines('google-10000-english-no-swears.txt')
     @@mid_size_words = @@contents.select{|word| word.length.between?(5,12)}
-    @@count = 0 
 
     attr_accessor :guessword
 
   def initialize(player_class)
     @player = player_class.new('Jon',self)
     @Letter
-    @player_guess = []
+    @player_guesses = []
     @guessword = @@mid_size_words[rand(0..8449)].chop.split('')
     @count = 0
     @filename
@@ -22,7 +21,7 @@
     if answer == 'y'
       p 'Filename?'
       @filename = gets.chomp
-      saved_game = [@player_guess,@guessword,@count]
+      saved_game = [@player_guesses,@guessword,@count]
     File.open("saved_files/#{@filename}.txt",'w') do |f| 
       f.puts(saved_game)
     end 
@@ -46,8 +45,8 @@
     end 
     #seperate guessword,guess display and count
     location = array.length/2
-    
-    @player_guess = array.slice(0,location)
+
+    @player_guesses = array.slice(0,location)
     @guessword = array.slice(location,location)
     @count = array[-1].to_i
     end 
@@ -60,7 +59,7 @@
   def generate_guess_display()
     count = 0
     until count == @guessword.length
-    @player_guess.push('_')
+    @player_guesses.push('_')
     count +=1
     end
   end 
@@ -76,7 +75,7 @@
     generate_guess_display
     openfile
     p @guessword
-    p @player_guess
+    p @player_guesses
     p @count
     until @count == 3
     savefile()
@@ -89,12 +88,12 @@
 
     @guessword.each_with_index do |l,index|  
       if l == @letter
-        @player_guess[index] = l
+        @player_guesses[index] = l
       else 
         gameover?(@count)
       end 
     end 
-    p @player_guess
+    p @player_guesses
     end 
 
   end 
