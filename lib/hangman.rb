@@ -45,9 +45,11 @@
        array << l.chop
     end 
     #seperate guessword,guess display and count
-    p array.slice(0,array.length/2)
-    p array.slice(array.length/2,array.length/2)
-    p array[-1]
+    location = array.length/2
+    
+    @player_guess = array.slice(0,location)
+    @guessword = array.slice(location,location)
+    @count = array[-1].to_i
     end 
   end 
 
