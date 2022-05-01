@@ -70,7 +70,7 @@
       return
     end 
   end 
-
+  #start game
   def play()
     generate_guess_display
     openfile
