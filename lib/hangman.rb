@@ -42,9 +42,9 @@
     @filename = gets.chomp
     file = File.open("saved_files/#{@filename}.txt","r")
     data = JSON.load(file)
-    data['guessword'] = @guessword
-    data['player_guesses'] = @player_guesses
-    data ['count'] = @count
+    @guessword = data['guessword']
+    @player_guesses = data['player_guesses']
+    @count = data['count']
     end 
   end 
 
@@ -66,7 +66,7 @@
       return
     end 
   end 
-  
+
   #start game
   def play()
     generate_guess_display
