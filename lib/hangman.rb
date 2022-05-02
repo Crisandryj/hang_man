@@ -1,4 +1,5 @@
  require './lib/player.rb'
+ require 'json'
  
  class Hangman
     @@contents = File.readlines('google-10000-english-no-swears.txt')
@@ -21,9 +22,11 @@
     if answer == 'y'
       p 'Filename?'
       @filename = gets.chomp
-      saved_game = [@player_guesses,@guessword,@count]
+      saved_game = {player_guesses: @player_guesses,
+                    guessword: @guessword,
+                    count: @count}
     File.open("saved_files/#{@filename}.txt",'w') do |f| 
-      f.puts(saved_game)
+      f.write(JSON.dump(saved_game))
     end 
     else
       return  
@@ -38,17 +41,10 @@
     view_saved_files
     @filename = gets.chomp
     file = File.open("saved_files/#{@filename}.txt","r")
-    lines = file.readlines
-    array = []
-    lines.each do |l| 
-       array << l.chop
-    end 
-    #seperate guessword,guess display and count
-    location = array.length/2
-
-    @player_guesses = array.slice(0,location)
-    @guessword = array.slice(location,location)
-    @count = array[-1].to_i
+    data = JSON.load(file)
+    data['guessword'] = @guessword
+    data['player_guesses'] = @player_guesses
+    data ['count'] = @count
     end 
   end 
 
@@ -70,6 +66,7 @@
       return
     end 
   end 
+  
   #start game
   def play()
     generate_guess_display
